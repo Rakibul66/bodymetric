@@ -14,7 +14,15 @@
 		802AD1B62C9F504A00C355EE /* mybmiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802AD1B52C9F504A00C355EE /* mybmiTests.swift */; };
 		802AD1C02C9F504A00C355EE /* mybmiUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802AD1BF2C9F504A00C355EE /* mybmiUITests.swift */; };
 		802AD1C22C9F504A00C355EE /* mybmiUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802AD1C12C9F504A00C355EE /* mybmiUITestsLaunchTests.swift */; };
-		802AD1CF2C9F528500C355EE /* BMIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802AD1CE2C9F528500C355EE /* BMIService.swift */; };
+		8053E5DA2D6666DB00C329C3 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053E5D92D6666DB00C329C3 /* HistoryView.swift */; };
+		8053E5DC2D6666F800C329C3 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053E5DB2D6666F800C329C3 /* ResultView.swift */; };
+		8053E5DE2D66671E00C329C3 /* BMIRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053E5DD2D66671E00C329C3 /* BMIRecord.swift */; };
+		8053E5E02D66679D00C329C3 /* BMIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053E5DF2D66679D00C329C3 /* BMIService.swift */; };
+		8053E5E22D666A1200C329C3 /* InputScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053E5E12D666A1200C329C3 /* InputScreen.swift */; };
+		8053E5E62D666B0B00C329C3 /* hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053E5E52D666B0300C329C3 /* hex.swift */; };
+		8053E5E82D66E4E800C329C3 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053E5E72D66E4E800C329C3 /* SettingsView.swift */; };
+		8053E5EA2D66E66500C329C3 /* GenderSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053E5E92D66E66500C329C3 /* GenderSelectionView.swift */; };
+		8053E5EC2D66ED9E00C329C3 /* CustomStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053E5EB2D66ED9E00C329C3 /* CustomStepper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,7 +54,15 @@
 		802AD1BB2C9F504A00C355EE /* mybmiUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = mybmiUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		802AD1BF2C9F504A00C355EE /* mybmiUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mybmiUITests.swift; sourceTree = "<group>"; };
 		802AD1C12C9F504A00C355EE /* mybmiUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mybmiUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		802AD1CE2C9F528500C355EE /* BMIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BMIService.swift; sourceTree = "<group>"; };
+		8053E5D92D6666DB00C329C3 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		8053E5DB2D6666F800C329C3 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
+		8053E5DD2D66671E00C329C3 /* BMIRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BMIRecord.swift; sourceTree = "<group>"; };
+		8053E5DF2D66679D00C329C3 /* BMIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BMIService.swift; sourceTree = "<group>"; };
+		8053E5E12D666A1200C329C3 /* InputScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputScreen.swift; sourceTree = "<group>"; };
+		8053E5E52D666B0300C329C3 /* hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hex.swift; sourceTree = "<group>"; };
+		8053E5E72D66E4E800C329C3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		8053E5E92D66E66500C329C3 /* GenderSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenderSelectionView.swift; sourceTree = "<group>"; };
+		8053E5EB2D66ED9E00C329C3 /* CustomStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomStepper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,9 +113,17 @@
 		802AD1A22C9F504900C355EE /* mybmi */ = {
 			isa = PBXGroup;
 			children = (
+				8053E5EB2D66ED9E00C329C3 /* CustomStepper.swift */,
+				8053E5E92D66E66500C329C3 /* GenderSelectionView.swift */,
+				8053E5E72D66E4E800C329C3 /* SettingsView.swift */,
+				8053E5E52D666B0300C329C3 /* hex.swift */,
+				8053E5E12D666A1200C329C3 /* InputScreen.swift */,
+				8053E5DF2D66679D00C329C3 /* BMIService.swift */,
+				8053E5DD2D66671E00C329C3 /* BMIRecord.swift */,
+				8053E5DB2D6666F800C329C3 /* ResultView.swift */,
+				8053E5D92D6666DB00C329C3 /* HistoryView.swift */,
 				802AD1A32C9F504900C355EE /* mybmiApp.swift */,
 				802AD1A52C9F504900C355EE /* ContentView.swift */,
-				802AD1CE2C9F528500C355EE /* BMIService.swift */,
 				802AD1A72C9F504A00C355EE /* Assets.xcassets */,
 				802AD1A92C9F504A00C355EE /* mybmi.entitlements */,
 				802AD1AA2C9F504A00C355EE /* Preview Content */,
@@ -263,8 +287,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				802AD1A62C9F504900C355EE /* ContentView.swift in Sources */,
+				8053E5E62D666B0B00C329C3 /* hex.swift in Sources */,
+				8053E5E22D666A1200C329C3 /* InputScreen.swift in Sources */,
+				8053E5E82D66E4E800C329C3 /* SettingsView.swift in Sources */,
+				8053E5DA2D6666DB00C329C3 /* HistoryView.swift in Sources */,
+				8053E5E02D66679D00C329C3 /* BMIService.swift in Sources */,
+				8053E5EA2D66E66500C329C3 /* GenderSelectionView.swift in Sources */,
+				8053E5DC2D6666F800C329C3 /* ResultView.swift in Sources */,
+				8053E5EC2D66ED9E00C329C3 /* CustomStepper.swift in Sources */,
+				8053E5DE2D66671E00C329C3 /* BMIRecord.swift in Sources */,
 				802AD1A42C9F504900C355EE /* mybmiApp.swift in Sources */,
-				802AD1CF2C9F528500C355EE /* BMIService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

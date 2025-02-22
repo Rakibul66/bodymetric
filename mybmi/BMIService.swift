@@ -1,53 +1,25 @@
-import Foundation
+//
+//  BMIService.swift
+//  mybmi
+//
+//  Created by Roxy  on 20/2/25.
+//
 
-// Model for BMI Response
-struct BMIResponse: Codable {
-    let bmi: Double
-    let weight: String
-    let height: String
-    let weightCategory: String
-}
 
 class BMIService {
-    
-    private let apiKey = "8ec235d2f6mshbffe97c67b86260p1a6cb8jsna608fd681823"
-    private let apiHost = "body-mass-index-bmi-calculator.p.rapidapi.com"
-    
-    func fetchBMI(weight: Double, height: Double, completion: @escaping (Result<BMIResponse, Error>) -> Void) {
+    func calculateBMI(weight: Double, height: Double) -> (Double, String) {
+        let bmi = weight / (height * height)
+        let category: String
         
-        // Construct URL
-        guard let url = URL(string: "https://\(apiHost)/metric?weight=\(weight)&height=\(height)") else {
-            print("Invalid URL")
-            return
+        switch bmi {
+        case ..<18.5: category = "UnderWeight"
+        case 18.5..<25: category = "Normal"
+        case 25..<30: category = "Overweight"
+        case 30..<35: category = "Obese Class I"
+        case 35..<40: category = "Obese Class II"
+        default: category = "Obese Class III"
         }
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue(apiKey, forHTTPHeaderField: "x-rapidapi-key")
-        request.setValue(apiHost, forHTTPHeaderField: "x-rapidapi-host")
-        
-        // Network call
-        let session = URLSession.shared
-        let task = session.dataTask(with: request) { data, response, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            guard let data = data else {
-                print("No data received")
-                return
-            }
-            
-            // Parse JSON
-            do {
-                let decoder = JSONDecoder()
-                let bmiResponse = try decoder.decode(BMIResponse.self, from: data)
-                completion(.success(bmiResponse))
-            } catch let jsonError {
-                completion(.failure(jsonError))
-            }
-        }
-        task.resume()
+        return (bmi, category)
     }
 }

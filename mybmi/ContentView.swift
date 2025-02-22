@@ -1,160 +1,142 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var selectedWeight: Int = 70  // Default weight in kg
-    @State private var selectedHeight: Double = 1.75  // Default height in meters
-    @State private var bmiResult: String = "Your BMI will appear here"
-    @State private var isLoading: Bool = false
-    
-    let bmiService = BMIService()
-
-    // Range of selectable weights and heights
-    let weightRange = Array(30...200)  // 30 kg to 200 kg
-    let heightRange = stride(from: 1.0, to: 2.5, by: 0.01).map { Double($0) }  // 1.0 m to 2.5 m in steps of 0.01 m
+    @State private var navigateToGenderSelection = false
+    @State private var navigateToHistory = false
+    @State private var navigateToSettings = false
+    @AppStorage("bmiHistory") private var historyData: Data = Data()
+    @State private var history: [BMIRecord] = []
 
     var body: some View {
-        ZStack {
-            Color(hex: "FFFFFF")  // Body background color
-                .edgesIgnoringSafeArea(.all)
-            
-            VStack(spacing: 20) {
-                Text("BMI Calculator")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(Color(hex: "65B741"))
+        NavigationView {
+            ZStack {
+                Color(hex: "080E23").edgesIgnoringSafeArea(.all)
 
-                // Weight Picker
-                VStack {
-                    Text("Select Weight (kg)")
-                        .font(.headline)
-                        .foregroundColor(Color(hex: "65B741"))
+                VStack(spacing: 20) {
                     
-                    Picker("Weight", selection: $selectedWeight) {
-                        ForEach(weightRange, id: \.self) { weight in
-                            Text("\(weight) kg").tag(weight)
+                    // **Top Bar with App Name and Icons**
+                    HStack {
+                        Text("BMI Calculator")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                        
+                        Spacer()
+
+                        Button(action: { navigateToHistory = true }) {
+                            Image(systemName: "clock.fill") // History Icon
+                                .font(.title2)
+                                .foregroundColor(.white)
+                        }
+                        .padding(.trailing, 10)
+
+                        Button(action: { navigateToSettings = true }) {
+                            Image(systemName: "gearshape.fill") // Settings Icon
+                                .font(.title2)
+                                .foregroundColor(.white)
                         }
                     }
-                    .pickerStyle(platformSpecificPickerStyle())
-                    .frame(height: pickerHeight())
-                    .padding()
-                    .background(Color.gray.opacity(0.2))
-                    .cornerRadius(10)
-                }
+                    .padding(.horizontal)
 
-                // Height Picker
-                VStack {
-                    Text("Select Height (m)")
-                        .font(.headline)
-                        .foregroundColor(Color(hex: "65B741"))
-                    
-                    Picker("Height", selection: $selectedHeight) {
-                        ForEach(heightRange, id: \.self) { height in
-                            Text(String(format: "%.2f m", height)).tag(height)
+                    // **Banner Image**
+                    Image("image") // Replace with actual banner image
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 200)
+                        .clipped()
+                        .cornerRadius(15)
+                        .padding(.horizontal)
+
+                    // **Recent BMI History**
+                    VStack(alignment: .leading) {
+                        Text("Recent History")
+                            .font(.title2)
+                            .foregroundColor(.white)
+                            .padding(.leading)
+
+                        if history.isEmpty {
+                            Text("No records yet")
+                                .foregroundColor(.gray)
+                                .padding(.leading)
+                        } else {
+                            ForEach(history.prefix(2), id: \.id) { record in
+                                historyCard(record: record)
+                            }
                         }
                     }
-                    .pickerStyle(platformSpecificPickerStyle())
-                    .frame(height: pickerHeight())
-                    .padding()
-                    .background(Color.gray.opacity(0.2))
-                    .cornerRadius(10)
-                }
 
-                // Button to calculate BMI
-                Button(action: calculateBMI) {
-                    Text("Calculate BMI")
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color(hex: "65B741"))
-                        .cornerRadius(10)
-                }
-                .disabled(isLoading)  // Disable button while loading
+                    // **Calculate BMI Button**
+                    VStack {
+                        Text("Want to Calculate?")
+                            .font(.title2)
+                            .foregroundColor(.white)
+                            .padding(.top, 10)
 
-                // Display the BMI result
-                if isLoading {
-                    ProgressView()  // Horizontal loader
-                        .progressViewStyle(LinearProgressViewStyle())
-                        .padding()
-                } else {
-                    resultCard
+                        Button(action: { navigateToGenderSelection = true }) {
+                            HStack {
+                                Text("Calculate Here")
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .foregroundColor(.white)
+                            }
+                            .padding()
+                            .background(Color(hex: "142B4A"))
+                            .cornerRadius(12)
+                        }
+                        .padding(.horizontal)
+                    }
+                    
+                    Spacer()
                 }
+                .padding(.top, 10)
+                .onAppear(perform: loadHistory) // Load real history when the screen appears
 
-                Spacer()
+                // **Navigation Links**
+                NavigationLink(destination: GenderSelectionView(), isActive: $navigateToGenderSelection) { EmptyView() }
+                NavigationLink(destination: HistoryView(), isActive: $navigateToHistory) { EmptyView() }
+                NavigationLink(destination: SettingsView(), isActive: $navigateToSettings) { EmptyView() }
             }
-            .padding()
         }
     }
 
-    // Result card view
-    private var resultCard: some View {
-        VStack {
-            Text(bmiResult)
-                .font(.title2)
-                .multilineTextAlignment(.center)
-                .foregroundColor(Color(hex: "519234"))
-                .padding()
-                .background(Color.white)
-                .cornerRadius(15)
-                .shadow(radius: 10)
-                .transition(.slide)  // Animation for result
+    // **Load Real BMI History from UserDefaults**
+    func loadHistory() {
+        if let decoded = try? JSONDecoder().decode([BMIRecord].self, from: historyData) {
+            // Sort history by latest date first
+            history = decoded.sorted(by: { $0.date > $1.date })
+        }
+    }
+
+    // **History Card View**
+    func historyCard(record: BMIRecord) -> some View {
+        VStack(alignment: .leading, spacing: 5) {
+            Text("BMI: \(String(format: "%.1f", record.bmi))")
+                .font(.headline)
+                .foregroundColor(.white)
+            Text("Weight: \(record.weight) kg, Height: \(String(format: "%.2f", record.height)) m")
+                .font(.subheadline)
+                .foregroundColor(.white)
+            Text("Category: \(record.category)")
+                .foregroundColor(getColor(for: record.bmi))
         }
         .padding()
-        .animation(.easeInOut, value: bmiResult)  // Animate result changes
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color(hex: "142B4A"))
+        .cornerRadius(10)
+        .padding(.horizontal)
     }
 
-    // Method to calculate BMI using the API
-    func calculateBMI() {
-        isLoading = true  // Start loading
-        let weightValue = Double(selectedWeight)
-        let heightValue = selectedHeight
-
-        bmiService.fetchBMI(weight: weightValue, height: heightValue) { result in
-            DispatchQueue.main.async {
-                isLoading = false  // Stop loading
-                switch result {
-                case .success(let bmiResponse):
-                    bmiResult = "Your BMI: \(String(format: "%.2f", bmiResponse.bmi))"
-                case .failure(let error):
-                    bmiResult = "Error calculating BMI: \(error.localizedDescription)"
-                }
-            }
+    // **Get Category Color**
+    func getColor(for bmi: Double) -> Color {
+        switch bmi {
+        case ..<18.5: return .blue
+        case 18.5..<25: return .green
+        case 25..<30: return .yellow
+        case 30..<35: return .purple
+        case 35..<40: return .red
+        default: return .orange
         }
     }
-    
-    // Platform-specific picker style
-    private func platformSpecificPickerStyle() -> some PickerStyle {
-        #if os(macOS)
-        return MenuPickerStyle()
-        #else
-        return WheelPickerStyle()
-        #endif
-    }
-    
-    // Platform-specific picker height
-    private func pickerHeight() -> CGFloat {
-        #if os(macOS)
-        return 40
-        #else
-        return 150
-        #endif
-    }
-}
-
-// Extension for hex color
-extension Color {
-    init?(hex: String) {
-        var rgb: UInt64 = 0
-        Scanner(string: hex).scanHexInt64(&rgb)  // Correct method name
-        self.init(
-            .sRGB,
-            red: Double((rgb & 0xFF0000) >> 16) / 255.0,
-            green: Double((rgb & 0x00FF00) >> 8) / 255.0,
-            blue: Double(rgb & 0x0000FF) / 255.0,
-            opacity: 1.0
-        )
-    }
-}
-
-#Preview {
-    ContentView()
 }
