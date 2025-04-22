@@ -16,7 +16,7 @@ struct ContentView: View {
                     
                     // **Top Bar with App Name and Icons**
                     HStack {
-                        Text("BMI Calculator")
+                        Text("BodyMetric")
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .foregroundColor(.white)

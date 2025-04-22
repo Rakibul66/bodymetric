@@ -37,21 +37,38 @@ struct SettingsView: View {
 
                     List {
                         Section {
-                            SettingsRow(icon: "star.fill", title: "Rate Us", color: .blue)
-                            SettingsRow(icon: "pencil", title: "Feedback", color: .blue)
-                            SettingsRow(icon: "square.and.arrow.up", title: "Share App", color: .blue)
+                            SettingsRow(icon: "star.fill", title: "Rate Us", color: .blue) {
+                                if let url = URL(string: "https://apps.apple.com/app/idYOUR_APP_ID") {
+                                    UIApplication.shared.open(url)
+                                }
+                            }
+                            SettingsRow(icon: "pencil", title: "Feedback", color: .blue) {
+                                // Show email composer or open a feedback form
+                            }
+                            SettingsRow(icon: "square.and.arrow.up", title: "Share App", color: .blue) {
+                                shareApp()
+                            }
                         }
-                        
+
                         Section {
-                            SettingsRow(icon: "doc.text", title: "Privacy Policy", color: .blue)
-                            SettingsRow(icon: "link", title: "Reference Links", color: .blue)
-                            SettingsRow(icon: "apps.iphone", title: "More Apps", color: .blue)
+                            SettingsRow(icon: "doc.text", title: "Privacy Policy", color: .blue) {
+                                openLink("https://yourapp.com/privacy")
+                            }
+                            SettingsRow(icon: "link", title: "Reference Links", color: .blue) {
+                                openLink("https://yourapp.com/links")
+                            }
+                            SettingsRow(icon: "apps.iphone", title: "More Apps", color: .blue) {
+                                openLink("https://apps.apple.com/developer/idYOUR_DEV_ID")
+                            }
                         }
-                        
+
                         Section {
-                            SettingsRow(icon: "trash", title: "Delete Data", color: .red)
+                            SettingsRow(icon: "trash", title: "Delete Data", color: .red) {
+                                deleteAppData()
+                            }
                         }
                     }
+
                     .listStyle(InsetGroupedListStyle())
                     .background(Color.fromHex("142B4A")) // Applied Fixed Hex Color
                     .scrollContentBackground(.hidden)
@@ -68,20 +85,24 @@ struct SettingsRow: View {
     let icon: String
     let title: String
     let color: Color
+    let action: () -> Void
 
     var body: some View {
-        HStack {
-            Image(systemName: icon)
-                .foregroundColor(color)
-            Text(title)
-                .foregroundColor(.white)
-            Spacer()
+        Button(action: action) {
+            HStack {
+                Image(systemName: icon)
+                    .foregroundColor(color)
+                Text(title)
+                    .foregroundColor(.white)
+                Spacer()
+            }
+            .padding()
+            .background(Color.fromHex("142B4A"))
+            .cornerRadius(10)
         }
-        .padding()
-        .background(Color.fromHex("142B4A")) // Fixed Hex Color Usage
-        .cornerRadius(10)
     }
 }
+
 
 // ✅ Fixed Color Extension for Hex
 extension Color {
@@ -104,4 +125,26 @@ struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsView()
     }
+}
+
+func openLink(_ urlString: String) {
+    if let url = URL(string: urlString) {
+        UIApplication.shared.open(url)
+    }
+}
+
+func shareApp() {
+    let url = URL(string: "https://apps.apple.com/app/idYOUR_APP_ID")!
+    let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+    
+    // iOS 16+ workaround to present from SwiftUI
+    if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+       let root = scene.windows.first?.rootViewController {
+        root.present(activityVC, animated: true, completion: nil)
+    }
+}
+
+func deleteAppData() {
+    // Replace this with actual logic (e.g., UserDefaults.remove, CoreData deletion)
+    print("🗑 All data deleted")
 }
