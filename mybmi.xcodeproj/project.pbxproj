@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8008FE562E0BB7D400AC5667 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 8008FE552E0BB7D400AC5667 /* GoogleMobileAds */; };
 		802AD1A42C9F504900C355EE /* mybmiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802AD1A32C9F504900C355EE /* mybmiApp.swift */; };
 		802AD1A62C9F504900C355EE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802AD1A52C9F504900C355EE /* ContentView.swift */; };
 		802AD1A82C9F504A00C355EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 802AD1A72C9F504A00C355EE /* Assets.xcassets */; };
@@ -23,6 +24,10 @@
 		8053E5E82D66E4E800C329C3 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053E5E72D66E4E800C329C3 /* SettingsView.swift */; };
 		8053E5EA2D66E66500C329C3 /* GenderSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053E5E92D66E66500C329C3 /* GenderSelectionView.swift */; };
 		8053E5EC2D66ED9E00C329C3 /* CustomStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053E5EB2D66ED9E00C329C3 /* CustomStepper.swift */; };
+		8093FA682E0BC83200F6A8D4 /* AdBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8093FA672E0BC83200F6A8D4 /* AdBannerView.swift */; };
+		8093FA6A2E0BC83500F6A8D4 /* AdsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8093FA692E0BC83500F6A8D4 /* AdsHelper.swift */; };
+		8093FA742E0BD14600F6A8D4 /* InterstitialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8093FA732E0BD14600F6A8D4 /* InterstitialViewModel.swift */; };
+		8093FA762E0BDFB500F6A8D4 /* AppOpenAdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8093FA752E0BDFB500F6A8D4 /* AppOpenAdManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +68,11 @@
 		8053E5E72D66E4E800C329C3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		8053E5E92D66E66500C329C3 /* GenderSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenderSelectionView.swift; sourceTree = "<group>"; };
 		8053E5EB2D66ED9E00C329C3 /* CustomStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomStepper.swift; sourceTree = "<group>"; };
+		8093FA672E0BC83200F6A8D4 /* AdBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdBannerView.swift; sourceTree = "<group>"; };
+		8093FA692E0BC83500F6A8D4 /* AdsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdsHelper.swift; sourceTree = "<group>"; };
+		8093FA702E0BCB4300F6A8D4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8093FA732E0BD14600F6A8D4 /* InterstitialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialViewModel.swift; sourceTree = "<group>"; };
+		8093FA752E0BDFB500F6A8D4 /* AppOpenAdManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppOpenAdManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8008FE562E0BB7D400AC5667 /* GoogleMobileAds in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,12 +101,48 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8008FE502E0BB6D300AC5667 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				8053E5DD2D66671E00C329C3 /* BMIRecord.swift */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		8008FE512E0BB6E000AC5667 /* service */ = {
+			isa = PBXGroup;
+			children = (
+				8053E5DF2D66679D00C329C3 /* BMIService.swift */,
+			);
+			path = service;
+			sourceTree = "<group>";
+		};
+		8008FE522E0BB6EA00AC5667 /* screens */ = {
+			isa = PBXGroup;
+			children = (
+				802AD1A52C9F504900C355EE /* ContentView.swift */,
+				8053E5D92D6666DB00C329C3 /* HistoryView.swift */,
+				8053E5DB2D6666F800C329C3 /* ResultView.swift */,
+				8053E5E72D66E4E800C329C3 /* SettingsView.swift */,
+				8053E5E12D666A1200C329C3 /* InputScreen.swift */,
+			);
+			path = screens;
+			sourceTree = "<group>";
+		};
+		8008FE542E0BB7D400AC5667 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		802AD1972C9F504900C355EE = {
 			isa = PBXGroup;
 			children = (
 				802AD1A22C9F504900C355EE /* mybmi */,
 				802AD1B42C9F504A00C355EE /* mybmiTests */,
 				802AD1BE2C9F504A00C355EE /* mybmiUITests */,
+				8008FE542E0BB7D400AC5667 /* Frameworks */,
 				802AD1A12C9F504900C355EE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -113,17 +160,15 @@
 		802AD1A22C9F504900C355EE /* mybmi */ = {
 			isa = PBXGroup;
 			children = (
+				8093FA702E0BCB4300F6A8D4 /* Info.plist */,
+				8093FA6B2E0BC84100F6A8D4 /* ads */,
+				8008FE522E0BB6EA00AC5667 /* screens */,
+				8008FE512E0BB6E000AC5667 /* service */,
+				8008FE502E0BB6D300AC5667 /* model */,
 				8053E5EB2D66ED9E00C329C3 /* CustomStepper.swift */,
 				8053E5E92D66E66500C329C3 /* GenderSelectionView.swift */,
-				8053E5E72D66E4E800C329C3 /* SettingsView.swift */,
 				8053E5E52D666B0300C329C3 /* hex.swift */,
-				8053E5E12D666A1200C329C3 /* InputScreen.swift */,
-				8053E5DF2D66679D00C329C3 /* BMIService.swift */,
-				8053E5DD2D66671E00C329C3 /* BMIRecord.swift */,
-				8053E5DB2D6666F800C329C3 /* ResultView.swift */,
-				8053E5D92D6666DB00C329C3 /* HistoryView.swift */,
 				802AD1A32C9F504900C355EE /* mybmiApp.swift */,
-				802AD1A52C9F504900C355EE /* ContentView.swift */,
 				802AD1A72C9F504A00C355EE /* Assets.xcassets */,
 				802AD1A92C9F504A00C355EE /* mybmi.entitlements */,
 				802AD1AA2C9F504A00C355EE /* Preview Content */,
@@ -154,6 +199,17 @@
 				802AD1C12C9F504A00C355EE /* mybmiUITestsLaunchTests.swift */,
 			);
 			path = mybmiUITests;
+			sourceTree = "<group>";
+		};
+		8093FA6B2E0BC84100F6A8D4 /* ads */ = {
+			isa = PBXGroup;
+			children = (
+				8093FA752E0BDFB500F6A8D4 /* AppOpenAdManager.swift */,
+				8093FA732E0BD14600F6A8D4 /* InterstitialViewModel.swift */,
+				8093FA672E0BC83200F6A8D4 /* AdBannerView.swift */,
+				8093FA692E0BC83500F6A8D4 /* AdsHelper.swift */,
+			);
+			path = ads;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -244,6 +300,9 @@
 				Base,
 			);
 			mainGroup = 802AD1972C9F504900C355EE;
+			packageReferences = (
+				8008FE532E0BB7C700AC5667 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+			);
 			productRefGroup = 802AD1A12C9F504900C355EE /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -288,7 +347,11 @@
 			files = (
 				802AD1A62C9F504900C355EE /* ContentView.swift in Sources */,
 				8053E5E62D666B0B00C329C3 /* hex.swift in Sources */,
+				8093FA762E0BDFB500F6A8D4 /* AppOpenAdManager.swift in Sources */,
+				8093FA742E0BD14600F6A8D4 /* InterstitialViewModel.swift in Sources */,
 				8053E5E22D666A1200C329C3 /* InputScreen.swift in Sources */,
+				8093FA6A2E0BC83500F6A8D4 /* AdsHelper.swift in Sources */,
+				8093FA682E0BC83200F6A8D4 /* AdBannerView.swift in Sources */,
 				8053E5E82D66E4E800C329C3 /* SettingsView.swift in Sources */,
 				8053E5DA2D6666DB00C329C3 /* HistoryView.swift in Sources */,
 				8053E5E02D66679D00C329C3 /* BMIService.swift in Sources */,
@@ -459,6 +522,7 @@
 				DEVELOPMENT_TEAM = H5X8G97CFV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = mybmi/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = BodyMetric;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -498,6 +562,7 @@
 				DEVELOPMENT_TEAM = H5X8G97CFV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = mybmi/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = BodyMetric;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -653,6 +718,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8008FE532E0BB7C700AC5667 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8008FE552E0BB7D400AC5667 /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8008FE532E0BB7C700AC5667 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 802AD1982C9F504900C355EE /* Project object */;
 }

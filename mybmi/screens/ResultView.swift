@@ -1,74 +1,99 @@
 import SwiftUI
-
+import GoogleMobileAds
 
 struct ResultView: View {
     let bmiRecord: BMIRecord?
     
     @State private var animateGauge = false
     @State private var showDetails = false
-    @Environment(\.presentationMode) var presentationMode // For Home Navigation
-    @State private var screenshotImage: UIImage? // Holds the captured image
-    @State private var showShareSheet = false // Controls share sheet display
+    @Environment(\.presentationMode) var presentationMode
+    @State private var screenshotImage: UIImage?
+    @State private var showShareSheet = false
+    @StateObject var adModel = InterstitialViewModel() // ✅ Add this
 
     var body: some View {
-        ZStack {
-            Color(hex: "080E23").edgesIgnoringSafeArea(.all)
-            
-            VStack(spacing: 20) {
-                if let record = bmiRecord {
-                    
-                    // **BMI Gauge Chart with Animation**
-                    ZStack {
-                        GaugeView(bmi: record.bmi, animate: $animateGauge)
-                            .frame(height: 200)
-                        
-                        Text(String(format: "%.1f", record.bmi))
-                            .font(.system(size: 55, weight: .bold, design: .rounded))
-                            .foregroundColor(.white)
-                            .offset(y: 60)
-                            .scaleEffect(animateGauge ? 1 : 0.8)
-                            .animation(.easeInOut(duration: 1.2), value: animateGauge)
-                    }
-                    .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            animateGauge = true
-                            showDetails = true
+        GeometryReader { geometry in
+            ZStack {
+                Color(hex: "080E23").edgesIgnoringSafeArea(.all)
+
+                VStack(spacing: 0) {
+                    if let record = bmiRecord {
+                        ScrollView {
+                            VStack(spacing: 20) {
+                                // Gauge
+                                ZStack {
+                                    GaugeView(bmi: record.bmi, animate: $animateGauge)
+                                        .frame(height: 200)
+
+                                    Text(String(format: "%.1f", record.bmi))
+                                        .font(.system(size: 55, weight: .bold, design: .rounded))
+                                        .foregroundColor(.white)
+                                        .offset(y: 60)
+                                        .scaleEffect(animateGauge ? 1 : 0.8)
+                                        .animation(.easeInOut(duration: 1.2), value: animateGauge)
+                                }
+                                .onAppear {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                        animateGauge = true
+                                        showDetails = true
+                                    }
+                                }
+
+                                // Info Rows
+                                VStack(spacing: 15) {
+                                    infoRow(label: "Category", value: record.category)
+                                    infoRow(label: "Weight", value: "\(record.weight) kg")
+                                    infoRow(label: "Height", value: String(format: "%.2f m", record.height))
+                                    infoRow(label: "Age", value: "\(record.age)")
+                                    infoRow(label: "Activity Level", value: record.activityLevel)
+                                }
+                                .padding()
+                                .background(BlurView(style: .systemUltraThinMaterialDark))
+                                .cornerRadius(15)
+                                .opacity(showDetails ? 1 : 0)
+                                .offset(y: showDetails ? 0 : 30)
+                                .animation(.easeOut(duration: 1), value: showDetails)
+
+                                // Buttons
+                                HStack(spacing: 20) {
+                                    actionButton(title: "Share", icon: "square.and.arrow.up", color: .blue) {
+                                        shareResult()
+                                        if let rootVC = UIApplication.shared.connectedScenes
+                                            .compactMap({ ($0 as? UIWindowScene)?.windows.first?.rootViewController }).first {
+                                            adModel.showAd(from: rootVC)
+                                        }
+                                    }
+
+                                    actionButton(title: "Home", icon: "house.fill", color: .green) {
+                                        if let rootVC = UIApplication.shared.connectedScenes
+                                            .compactMap({ ($0 as? UIWindowScene)?.windows.first?.rootViewController }).first {
+                                            adModel.showAd(from: rootVC)
+                                        }
+
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                                            presentationMode.wrappedValue.dismiss()
+                                        }
+                                    }
+                                }
+
+                                .opacity(showDetails ? 1 : 0)
+                                .animation(.easeInOut(duration: 1.2), value: showDetails)
+
+                                Spacer().frame(height: 60) // Padding for Ad
+                            }
+                            .padding()
                         }
+
+                        // Fixed Bottom Ad
+                        AdBannerView()
+                            .frame(width: geometry.size.width, height: 50)
+                            .background(Color.black.opacity(0.05))
                     }
-                    
-                    // **Animated Table View for BMI Details**
-                    VStack(spacing: 15) {
-                        infoRow(label: "Category", value: record.category)
-                        infoRow(label: "Weight", value: "\(record.weight) kg")
-                        infoRow(label: "Height", value: String(format: "%.2f m", record.height))
-                        infoRow(label: "Age", value: "\(record.age)")
-                        infoRow(label: "Activity Level", value: record.activityLevel)
-                    }
-                    .padding()
-                    .background(BlurView(style: .systemUltraThinMaterialDark))
-                    .cornerRadius(15)
-                    .opacity(showDetails ? 1 : 0)
-                    .offset(y: showDetails ? 0 : 30)
-                    .animation(.easeOut(duration: 1), value: showDetails)
-                    
-                    // **Share & Home Buttons**
-                    HStack(spacing: 20) {
-                        actionButton(title: "Share", icon: "square.and.arrow.up", color: .blue) {
-                            shareResult()
-                        }
-                        actionButton(title: "Home", icon: "house.fill", color: .green) {
-                            presentationMode.wrappedValue.dismiss() // Navigate Home
-                        }
-                    }
-                    .opacity(showDetails ? 1 : 0)
-                    .animation(.easeInOut(duration: 1.2), value: showDetails)
                 }
             }
-            .padding()
         }
     }
-    
-    // **Custom Info Row**
+
     @ViewBuilder
     func infoRow(label: String, value: String) -> some View {
         HStack {
@@ -82,8 +107,7 @@ struct ResultView: View {
         .offset(y: showDetails ? 0 : 15)
         .animation(.spring(response: 0.5, dampingFraction: 0.7), value: showDetails)
     }
-    
-    // **Button Action**
+
     @ViewBuilder
     func actionButton(title: String, icon: String, color: Color, action: @escaping () -> Void) -> some View {
         Button(action: action) {
@@ -101,19 +125,16 @@ struct ResultView: View {
             .animation(.spring(), value: showDetails)
         }
     }
-    
-    // **🚀 Share BMI Result with Screenshot**
+
     func shareResult() {
         let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
         let window = windowScene?.windows.first
-        
-        // **Take Screenshot**
+
         UIGraphicsBeginImageContextWithOptions(window?.bounds.size ?? CGSize(width: 300, height: 500), false, 0)
         window?.drawHierarchy(in: window?.bounds ?? CGRect.zero, afterScreenUpdates: true)
         screenshotImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        
-        // **Open Share Sheet**
+
         if let image = screenshotImage {
             let activityVC = UIActivityViewController(activityItems: [image], applicationActivities: nil)
             if let rootVC = window?.rootViewController {
